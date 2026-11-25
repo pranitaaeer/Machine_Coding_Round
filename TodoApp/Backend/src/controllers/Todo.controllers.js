@@ -1,4 +1,4 @@
-import { TodoModal } from "../models/Todo.models"
+import { TodoModal } from "../models/Todo.models.js"
 
 export const CreateTodo=async(req,res)=>{
   try {
