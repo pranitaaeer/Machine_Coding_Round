@@ -2,15 +2,15 @@ import mongoose ,{Schema} from "mongoose";
 
 const TodoSchema=new Schema({
     title:{
-        type:string,
+        type:String,
         required:true
     },
     description:{
-        type:string,
+        type:String,
         required:true
     },
     isCompleted:{
-        type:boolean,
+        type:Boolean,
         require:true
     },
 },{timestamps:true})
