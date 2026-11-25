@@ -28,7 +28,7 @@ export const getTodo=async(_,res)=>{
   try {
     
    const Todos=await TodoModal.find()
-   return res.status(200).json({message:"Todos get sucessfully",todos:Todos.lemgth>0 ? Todos : []})
+   return res.status(200).json({message:"Todos get sucessfully",todos:Todos})
 
   } catch (error) {
     console.log("err in creating todo")

@@ -8,10 +8,11 @@ const app=express()
 
 const PORT=process.env.PORT || 4000
 
+app.use(express.json())
 import TodoRouter from "./routes/todo.routes.js"
-app.route("/api",TodoRouter)
+app.use("/api",TodoRouter)
 
-app.listen(()=>{
+app.listen(PORT,()=>{
     console.log(`app is listen on PORT: ${PORT}`)
     DBConnect()
 

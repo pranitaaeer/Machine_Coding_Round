@@ -5,6 +5,6 @@ const router=Router()
 
 router.post("/create",CreateTodo)
 router.get("/get-todo",getTodo)
-router.delete("delete-todo/:id",DeleteTodo)
+router.delete("/delete-todo/:id",DeleteTodo)
 
 export default router
