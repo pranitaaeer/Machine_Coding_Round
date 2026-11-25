@@ -11,7 +11,6 @@ const TodoSchema=new Schema({
     },
     isCompleted:{
         type:Boolean,
-        require:true
     },
 },{timestamps:true})
 
