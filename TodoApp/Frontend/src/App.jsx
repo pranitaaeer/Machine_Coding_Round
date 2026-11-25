@@ -15,7 +15,6 @@ const App = () => {
   const getTodo = async () => {
     try {
       const res = await axios.get(`${API}/get-todo`);
-      setTodos(res.data.todos);
     } catch (error) {
       console.log(error);
     } finally {
@@ -34,7 +33,6 @@ const App = () => {
         `${API}/delete-todo/${id}`
       );
 
-      console.log(res.data.message);
 
       setTodos((prev) =>
         prev.filter((todo) => todo._id !== id)

@@ -23,7 +23,6 @@ const TodoModal = ({ onClose, onCreated }) => {
         }
       );
 
-      console.log(res.data);
 
       await onCreated();
       onClose();

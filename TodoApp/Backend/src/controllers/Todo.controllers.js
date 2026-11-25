@@ -3,7 +3,6 @@ import { TodoModal } from "../models/Todo.models.js"
 export const CreateTodo=async(req,res)=>{
   try {
     const {title, description}=req.body
-    console.log("data:",title,description)
 
     if([title,description].some((elm)=>!elm || elm.trim()==="")){
       return res.status(400).json({message:"All fields are required"})
