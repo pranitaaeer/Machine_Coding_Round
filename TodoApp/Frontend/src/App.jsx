@@ -1,122 +1,170 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import TodoModal from "./components/TodoModal";
+import axios from "axios";
+
+const API = "http://localhost:4000/api";
+
+const App = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // GET TODOS
+  const getTodo = async () => {
+    try {
+      const res = await axios.get(`${API}/get-todo`);
+      setTodos(res.data.todos);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getTodo();
+  }, []);
+
+  // DELETE TODO
+  const deleteTodo = async (id) => {
+    try {
+      const res = await axios.delete(
+        `${API}/delete-todo/${id}`
+      );
+
+      console.log(res.data.message);
+
+      setTodos((prev) =>
+        prev.filter((todo) => todo._id !== id)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app">
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="logo">
+          <span className="logo-icon">✓</span>
+          TaskFlow
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+
+        <span className="nav-label">My Workspace</span>
+      </nav>
+
+      <main className="todos">
+
+        {/* Header */}
+        <div className="dashboard-header">
+          <div>
+            <p className="sub-heading">YOUR WORKSPACE</p>
+            <h1>My Todos</h1>
+            <p className="header-desc">
+              Organize your tasks and get things done.
+            </p>
+          </div>
+
+          <button
+            className="btn1"
+            onClick={() => setIsOpenModal(true)}
+          >
+            <span>+</span> Create Todo
+          </button>
         </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
+        {/* Todo Information */}
+        <div className="todo-info">
+          <div>
+            <h3>All Tasks</h3>
+            <p>{todos.length} tasks in total</p>
+          </div>
+        </div>
 
-export default App
+        {/* Todo Cards */}
+        <div className="container">
+
+          {loading ? (
+            <div className="empty-state">
+              <p>Loading your todos...</p>
+            </div>
+          ) : todos.length > 0 ? (
+
+            todos.map((todo) => (
+              <div className="cards" key={todo._id}>
+
+                <div className="card-top">
+                  <span className="task-label">
+                    TASK
+                  </span>
+
+                  <span className="task-dot"></span>
+                </div>
+
+                <div className="content">
+                  <h2>{todo.title}</h2>
+
+                  <p>
+                    {todo.description || "No description provided."}
+                  </p>
+                </div>
+
+                <div className="card-footer">
+                  <button
+                    className="iscomplete_btn"
+                    onClick={() => deleteTodo(todo._id)}
+                  >
+                    <span>✅</span> Iscompleted
+                  </button>
+
+                  <button
+                    className="btn"
+                    onClick={() => deleteTodo(todo._id)}
+                  >
+                    <span>×</span> Delete
+                  </button>
+                </div>
+
+              </div>
+            ))
+
+          ) : (
+
+            <div className="empty-state">
+              <div className="empty-icon">✦</div>
+              <h2>No todos found</h2>
+              <p>
+                You don't have any tasks yet.
+                Create your first todo to get started!
+              </p>
+
+              <button
+                className="empty-btn"
+                onClick={() => setIsOpenModal(true)}
+              >
+                + Create your first todo
+              </button>
+            </div>
+
+          )}
+
+        </div>
+
+        {/* Todo Modal */}
+        {isOpenModal && (
+          <TodoModal
+            onClose={() => setIsOpenModal(false)}
+            onCreated={getTodo}
+          />
+        )}
+
+      </main>
+    </div>
+  );
+};
+
+export default App;
