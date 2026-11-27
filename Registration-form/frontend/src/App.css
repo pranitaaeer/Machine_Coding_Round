@@ -10,7 +10,7 @@ body{
   align-items: center;
 }
 .card{
-  height: 55vh;
+  min-height: 55vh;
   width: 30%;
   background-color: rgb(249, 246, 246);
   border-radius: 20px;
@@ -57,4 +57,15 @@ body{
       cursor: pointer;
     }
  }
+}
+@media(max-width:1024px){
+  .card{
+    width: 50%;
+  }
+}
+
+@media(max-width:480px){
+  .card{
+    width: 90%;
+  }
 }
