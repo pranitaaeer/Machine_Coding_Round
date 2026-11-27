@@ -1,0 +1,31 @@
+body{
+    background-color: black;
+    color: white;
+}
+.box{
+    height: 100vh;
+}
+.topbar{
+    background-color: white;
+    color: black;
+    height: 8vh;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10vh;
+}
+.stats{
+    background-color: aliceblue;
+    color: black;
+    width: 380px;
+    border-radius: 10px;
+    padding: 25px;
+    
+}
+.stats-container{
+    margin-left: 5vw;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
